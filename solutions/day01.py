@@ -4,6 +4,7 @@ import time
 def main():
     input_list = get_input_list()
     solve_a(input_list)
+    print()
     solve_b(input_list)
 
 def solve_a(expense_report):
