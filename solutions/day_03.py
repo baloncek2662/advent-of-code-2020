@@ -14,13 +14,16 @@ def solve_a(input_table):
     print (f'Number of trees hit: {trees_hit}')
 
 def solve_b(input_table):
-    result = get_trees_hit_count(input_table, 1, 1)
-    result *= get_trees_hit_count(input_table, 3, 1)
-    result *= get_trees_hit_count(input_table, 5, 1)
-    result *= get_trees_hit_count(input_table, 7, 1)
-    result *= get_trees_hit_count(input_table, 1, 2)
-    print(get_trees_hit_count(input_table, 1, 2))
-
+    move_params = [
+        {'right' : 1, 'down' : 1},
+        {'right' : 3, 'down' : 1},
+        {'right' : 5, 'down' : 1},
+        {'right' : 7, 'down' : 1},
+        {'right' : 1, 'down' : 2},
+    ]
+    result = 1
+    for move in move_params:
+        result *= get_trees_hit_count(input_table, move['right'], move['down'])
     
     print (f'Number of trees hit multiplied: {result}')
 
