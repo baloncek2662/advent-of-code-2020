@@ -40,6 +40,9 @@ def get_input_list():
 
 def get_binary_representation(val):
     result = ''
+    # better to use .replace
+    # row = seat[:-3]
+    # row = row.replace("F", "0").replace("B", "1")
     for letter in val[:7]:
         if letter == 'F':
             result += '0'
