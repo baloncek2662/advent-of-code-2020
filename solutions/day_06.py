@@ -19,9 +19,7 @@ def solve_b(answers_list):
     result = 0
     for el in answers_list:
         result += len(el)
-    print(f'Answers count B: {result}')
-    pass            
-    
+    print(f'Answers count B: {result}')    
 
 def get_input_list_a():
     file = open("../inputs/day_06.txt", "r")
