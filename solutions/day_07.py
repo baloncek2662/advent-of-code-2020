@@ -3,9 +3,10 @@ import time
 
 SHINY_GOLD = 'shiny gold'
 def main():
-    solve_a(get_input_list())
+    input_list = get_input_list()
+    solve_a(input_list)
     print()
-    solve_b(get_input_list())
+    solve_b(input_list)
 
 
 def solve_a(bag_list):
