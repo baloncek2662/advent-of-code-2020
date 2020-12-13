@@ -8,34 +8,18 @@ def main():
 
 
 def solve_a(instruction_list):
-    acc = 0
-    i = 0
-    while True:
-        if instruction_list[i]['visited']:
-            break 
-        instruction_list[i]['visited'] = True
-        instr = instruction_list[i]['instr']
-        val = instruction_list[i]['val']
-        if instr == 'jmp':
-            i += val
-            continue
-        elif instr == 'acc':
-            acc += val    
-
-        i += 1
-
+    acc = run_program(instruction_list)
     print(f'Final value of accumulator: {acc}')
 
 def solve_b(instruction_list):
-    acc = 0
     for changed_instr in instruction_list:
         if changed_instr['instr'] == 'acc':
             continue
-        changed_instr = change_instr(changed_instr)
+        changed_instr = change_instr(changed_instr) # change
         
         run_program(instruction_list)
 
-        changed_instr = change_instr(changed_instr)
+        changed_instr = change_instr(changed_instr) # change back
         reset_visited(instruction_list)
 
 def change_instr(instr):
