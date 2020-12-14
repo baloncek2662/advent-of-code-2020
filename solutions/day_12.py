@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import time
+import math
 
 NORTH,EAST,SOUTH,WEST,LEFT,RIGHT,FORWARD = range(7)
 
@@ -15,15 +16,15 @@ def solve_a(instruction_list):
     for instruction in instruction_list:
         ship.execute_instruction(instruction)
         
-    print(f'Manhattan distance of ship coordinates: {ship.x+ship.y}')
+    print(f'Manhattan distance of ship coordinates: {abs(ship.x)+abs(ship.y)}')
         
 def solve_b(instruction_list):
     ship2 = Ship2()
     for instruction in instruction_list:
         ship2.execute_instruction(instruction)
-        print(f'x: {ship2.x}, y: {ship2.y}\nwx: {ship2.wx}, wy: {ship2.wy}\n=========================')
-        
-    print(f'Manhattan distance of ship2 coordinates: {ship2.x+ship2.y}')
+        # print(f'{instruction}x: {ship2.x}, y: {ship2.y}\nwx: {ship2.wx}, wy: {ship2.wy}\n=========================')
+    # print(f'{ship2.x}, y: {ship2.y}\nwx: {ship2.wx}, wy: {ship2.wy}')
+    print(f'Manhattan distance of ship2 coordinates: {abs(ship2.x) + abs(ship2.y)}')
 
 def get_input_list():
     file = open("../inputs/day_12.txt", "r")
@@ -120,58 +121,56 @@ class Ship2:
             self.wy += instruction.value
 
     def handle_waypoint_rotation(self, instruction):
-        dist_x = self.wx
-        dist_y = self.wy
-        quadrant_shifts_clockwise = (instruction.value % 360) / 90
+        # source: https://stackoverflow.com/questions/34372480/rotate-point-about-another-point-in-degrees-python
+        angle = instruction.value % 360
         if instruction.order == LEFT:
-            quadrant_shifts_clockwise = 4 - quadrant_shifts_clockwise 
+            angle = 360 - angle 
+        angle_radians = math.radians(angle)
+        px, py = (self.wx, self.wy)
+        qx = math.cos(angle_radians) * px - math.sin(angle_radians) * py
+        qy = math.sin(angle_radians) * px + math.cos(angle_radians) * py
+        self.wx = round(qx)
+        self.wy = round(qy)
 
+        # wasted 1.5h on this 'homemade' solution (still doesn't work)
+        # dist_x = self.wx
+        # dist_y = self.wy
+        # quadrant_shifts_clockwise = (instruction.value % 360) / 90
+        # if instruction.order == LEFT:
+        #     quadrant_shifts_clockwise = 4 - quadrant_shifts_clockwise 
         # if quadrant_shifts_clockwise == 1:
-        #     if dist_x > 0 and dist_y > 0 or dist_x < 0 and dist_y < 0:
-        #         self.wy = -self.wy
+        #     if dist_x > 0 and dist_y > 0:
+        #         self.wx = -abs(dist_y)
+        #         self.wy = abs(dist_x)
+        #     elif dist_x < 0 and dist_y > 0:
+        #         self.wx = -abs(dist_y)
+        #         self.wy = -abs(dist_x)
+        #     elif dist_x < 0 and dist_y < 0:
+        #         self.wx = abs(dist_y)
+        #         self.wy = -abs(dist_x)
         #     else:
-        #         self.wx = -self.wx
+        #         self.wx = abs(dist_y)
+        #         self.wy = abs(dist_x)
         # elif quadrant_shifts_clockwise == 2:
-        #     self.wx = -self.wx
-        #     self.wy = -self.wy
-
+        #     self.wx = - self.wx
+        #     self.wy = - self.wy
         # elif quadrant_shifts_clockwise == 3:
-        #     if dist_x > 0 and dist_y > 0 or dist_x < 0 and dist_y < 0:
-        #         self.wx = -self.wx
+        #     if dist_x > 0 and dist_y > 0:
+        #         self.wx = abs(dist_y)
+        #         self.wy = -abs(dist_x)
+        #     elif dist_x < 0 and dist_y > 0:
+        #         self.wx = abs(dist_y)
+        #         self.wy = abs(dist_x)
+        #     elif dist_x < 0 and dist_y < 0:
+        #         self.wx = -abs(dist_y)
+        #         self.wy = abs(dist_x)
         #     else:
-        #         self.wy = -self.wy
-        if quadrant_shifts_clockwise == 1:
-            if dist_x > 0 and dist_y > 0 or dist_x < 0 and dist_y < 0:
-                self.wx = dist_y
-                self.wy = - dist_x
-            else:
-                self.wx = - dist_y
-                self.wy = dist_x
-        elif quadrant_shifts_clockwise == 2:
-            self.wx = - dist_y
-            self.wy = - dist_x
-
-        elif quadrant_shifts_clockwise == 3:
-            if dist_x > 0 and dist_y > 0 or dist_x < 0 and dist_y < 0:
-                self.wx = - dist_y
-                self.wy = dist_x
-            else:
-                self.wx = dist_y
-                self.wy = - dist_x
-
+        #         self.wx = -abs(dist_y)
+        #         self.wy = -abs(dist_x)
 
     def handle_ship_move(self, instruction):
         self.x += self.wx * instruction.value
         self.y += self.wy * instruction.value
-        # if self.x > self.wx:
-        #     self.x -= self.wx * instruction.value
-        # else:
-        #     self.x += self.wx * instruction.value
-        
-        # if self.y > self.wy:
-        #     self.y -= self.wy * instruction.value
-        # else:
-        #     self.y += self.wy * instruction.value
 
 
 
