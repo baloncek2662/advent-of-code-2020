@@ -188,7 +188,7 @@ def get_input_list():
     file = open("../inputs/day_11.txt", "r")
     grid = []
     for line in file.readlines():
-        line = line[:len(line)-1] # get rid of \n
+        line = line.split('\n')[0] # get rid of \n
         grid.append(line)
         
     file.close()
