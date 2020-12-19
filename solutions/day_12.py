@@ -22,8 +22,7 @@ def solve_b(instruction_list):
     ship2 = Ship2()
     for instruction in instruction_list:
         ship2.execute_instruction(instruction)
-        # print(f'{instruction}x: {ship2.x}, y: {ship2.y}\nwx: {ship2.wx}, wy: {ship2.wy}\n=========================')
-    # print(f'{ship2.x}, y: {ship2.y}\nwx: {ship2.wx}, wy: {ship2.wy}')
+        
     print(f'Manhattan distance of ship2 coordinates: {abs(ship2.x) + abs(ship2.y)}')
 
 def get_input_list():
